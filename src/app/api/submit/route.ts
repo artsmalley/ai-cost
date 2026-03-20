@@ -32,9 +32,13 @@ ${section("6. Vendor Count", body.vendorCount, body.vendorCountDetail)}
 
 ${section("7. Most Helpful Tool", body.mostHelpful, body.mostHelpfulDetail)}
 
-${section("8. Adoption Readiness", body.adoptionReadiness, body.adoptionReadinessDetail)}
+${section("8. Previous Attempts", body.previousAttempts, body.previousAttemptsDetail)}
 
-### 9. Anything Else
+${section("9. Roadblocks", body.roadblocks, body.roadblocksDetail)}
+
+${section("10. Key Stakeholders", body.stakeholders, body.stakeholdersDetail)}
+
+### Anything Else
 ${body.anythingElse || "*No response*"}
 
 ---

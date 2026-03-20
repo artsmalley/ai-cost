@@ -5,7 +5,7 @@ import { useState } from "react";
 interface FormData {
   name: string;
   role: string;
-  // Each question has a pick + explain
+  // Q1-Q10: pick + detail
   painPoint: string;
   painPointDetail: string;
   quoteFormat: string;
@@ -20,9 +20,13 @@ interface FormData {
   vendorCountDetail: string;
   mostHelpful: string;
   mostHelpfulDetail: string;
-  adoptionReadiness: string;
-  adoptionReadinessDetail: string;
-  // Pure open-ended
+  previousAttempts: string;
+  previousAttemptsDetail: string;
+  roadblocks: string;
+  roadblocksDetail: string;
+  stakeholders: string;
+  stakeholdersDetail: string;
+  // Final open-ended
   anythingElse: string;
 }
 
@@ -43,8 +47,12 @@ const initial: FormData = {
   vendorCountDetail: "",
   mostHelpful: "",
   mostHelpfulDetail: "",
-  adoptionReadiness: "",
-  adoptionReadinessDetail: "",
+  previousAttempts: "",
+  previousAttemptsDetail: "",
+  roadblocks: "",
+  roadblocksDetail: "",
+  stakeholders: "",
+  stakeholdersDetail: "",
   anythingElse: "",
 };
 
@@ -339,26 +347,62 @@ export default function Home() {
 
         <DiscoveryQuestion
           number={8}
-          label="Would an organization like Toyota be open to building a simple internal tool like this?"
-          prompt="What's the realistic path to adoption?"
-          name="adoptionReadiness"
+          label="Has anyone tried to solve this problem before?"
+          prompt="Spreadsheets, internal tools, vendor demos, consulting projects — anything that attempted to improve the quoting process."
+          name="previousAttempts"
           options={[
-            { value: "appetite", label: "There's appetite — someone just needs to show the concept" },
-            { value: "blocked", label: "IT backlog would block it even if people wanted it" },
-            { value: "depends", label: "Depends on the champion / department" },
-            { value: "unsure", label: "Not sure" },
+            { value: "spreadsheets", label: "Yes — spreadsheets or templates that people built informally" },
+            { value: "tool", label: "Yes — an internal tool or vendor product was tried" },
+            { value: "discussed", label: "It's been discussed but nothing was ever built" },
+            { value: "never", label: "Not that I'm aware of" },
           ]}
-          value={form.adoptionReadiness}
-          onSelectChange={set("adoptionReadiness")}
-          detail={form.adoptionReadinessDetail}
-          onDetailChange={set("adoptionReadinessDetail")}
-          detailPlaceholder="Who would champion this? What would convince leadership? What's been tried before? Any political or technical blockers?"
+          value={form.previousAttempts}
+          onSelectChange={set("previousAttempts")}
+          detail={form.previousAttemptsDetail}
+          onDetailChange={set("previousAttemptsDetail")}
+          detailPlaceholder="What was tried? What worked, what didn't? Why did it stall or get abandoned? What can we learn from those attempts?"
+        />
+
+        <DiscoveryQuestion
+          number={9}
+          label="What are the biggest roadblocks to improving this process?"
+          prompt="What gets in the way of making the quoting process better — even when people want to?"
+          name="roadblocks"
+          options={[
+            { value: "data-access", label: "Data is locked in systems or formats that are hard to work with" },
+            { value: "time-priority", label: "No one has time — everyone is buried in day-to-day work" },
+            { value: "organizational", label: "Organizational — too many departments, approvals, or politics" },
+            { value: "technical", label: "Technical — IT constraints, security policies, legacy systems" },
+          ]}
+          value={form.roadblocks}
+          onSelectChange={set("roadblocks")}
+          detail={form.roadblocksDetail}
+          onDetailChange={set("roadblocksDetail")}
+          detailPlaceholder="What specifically gets in the way? Are there cultural barriers, technical limitations, or resource constraints? What would need to change?"
+        />
+
+        <DiscoveryQuestion
+          number={10}
+          label="Who are the key people involved in the quoting process?"
+          prompt="Not names — roles. Who touches vendor quotes, who makes decisions, who feels the pain?"
+          name="stakeholders"
+          options={[
+            { value: "purchasing-only", label: "Mostly purchasing / procurement engineers" },
+            { value: "cross-functional", label: "Cross-functional — purchasing, engineering, quality, finance" },
+            { value: "management", label: "Management drives it — buyers just execute" },
+            { value: "unclear", label: "It varies a lot depending on the part or program" },
+          ]}
+          value={form.stakeholders}
+          onSelectChange={set("stakeholders")}
+          detail={form.stakeholdersDetail}
+          onDetailChange={set("stakeholdersDetail")}
+          detailPlaceholder="Who would benefit most from a better tool? Who would need to approve or support it? Who are the informal experts people go to with questions?"
         />
 
         {/* Final open-ended */}
         <div className="space-y-4 rounded-xl border border-gray-200 bg-white p-6">
           <h3 className="text-lg font-semibold text-gray-800">
-            9. Anything else?
+            Anything else?
           </h3>
           <p className="text-sm text-gray-500">
             What did we miss? What&apos;s the thing you&apos;d want us to know
