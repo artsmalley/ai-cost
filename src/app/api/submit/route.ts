@@ -1,38 +1,40 @@
 import { NextResponse } from "next/server";
 
+function section(title: string, pick: string, detail: string): string {
+  const pickLine = pick ? `**Selected:** ${pick}` : "*No selection*";
+  const detailLine = detail || "*No additional detail*";
+  return `### ${title}\n${pickLine}\n\n${detailLine}`;
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const token = process.env.GITHUB_TOKEN;
     const repo = "artsmalley/ai-cost";
 
-    // Format the response as a readable GitHub issue body
     const issueBody = `## Respondent
 - **Name:** ${body.name || "Anonymous"}
 - **Role:** ${body.role || "Not specified"}
 
-## Quick Answers
-| Question | Answer |
-|----------|--------|
-| #1 Pain point | ${body.painPoint || "—"} |
-| Quote format | ${body.quoteFormat || "—"} |
-| RFQ template | ${body.rfqTemplate || "—"} |
-| Chemistry type | ${body.chemistryType || "—"} |
-| Price validation | ${body.priceValidation || "—"} |
-| Vendor count | ${body.vendorCount || "—"} |
-| Most helpful tool | ${body.mostHelpful || "—"} |
-| Adoption readiness | ${body.adoptionReadiness || "—"} |
+---
 
-## The Friction
-${body.frictionStory || "*No response*"}
+${section("1. #1 Pain Point", body.painPoint, body.painPointDetail)}
 
-## Unused Data
-${body.unusedData || "*No response*"}
+${section("2. Quote Format", body.quoteFormat, body.quoteFormatDetail)}
 
-## Dream Tool
-${body.dreamTool || "*No response*"}
+${section("3. RFQ Template", body.rfqTemplate, body.rfqTemplateDetail)}
 
-## Anything Else
+${section("4. Chemistry Type", body.chemistryType, body.chemistryTypeDetail)}
+
+${section("5. Price Validation", body.priceValidation, body.priceValidationDetail)}
+
+${section("6. Vendor Count", body.vendorCount, body.vendorCountDetail)}
+
+${section("7. Most Helpful Tool", body.mostHelpful, body.mostHelpfulDetail)}
+
+${section("8. Adoption Readiness", body.adoptionReadiness, body.adoptionReadinessDetail)}
+
+### 9. Anything Else
 ${body.anythingElse || "*No response*"}
 
 ---
@@ -40,7 +42,6 @@ ${body.anythingElse || "*No response*"}
 `;
 
     if (token) {
-      // Store as a GitHub issue
       await fetch(`https://api.github.com/repos/${repo}/issues`, {
         method: "POST",
         headers: {
